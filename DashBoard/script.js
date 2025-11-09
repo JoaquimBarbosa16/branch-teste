@@ -1,135 +1,228 @@
-// ======= Alternar seções =======
-const links = document.querySelectorAll('.sidebar nav a');
-const secDashboard = document.getElementById('sec-dashboard');
-const secPerfil = document.getElementById('sec-perfil');
-const secAdicionar = document.getElementById('sec-adicionar');
+document.addEventListener("DOMContentLoaded", () => {
 
-links.forEach((link, idx) => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    // Esconde todas as seções
-    secDashboard.style.display = 'none';
-    secPerfil.style.display = 'none';
-    secAdicionar.style.display = 'none';
-    // Remove active dos links
-    links.forEach(l => l.classList.remove('active'));
-    link.classList.add('active');
-    // Exibe a seção correspondente
-    if(idx === 0) secDashboard.style.display = 'block';
-    if(idx === 1) secPerfil.style.display = 'block';
-    if(idx === 2) secAdicionar.style.display = 'block';
-  });
-});
+    /* ============================
+          TROCAR ENTRE AS SEÇÕES
+    ============================= */
+    const links = document.querySelectorAll(".sidebar nav a");
+    const secDashboard = document.getElementById("sec-dashboard");
+    const secPerfil = document.getElementById("sec-perfil");
+    const secAdicionar = document.getElementById("sec-adicionar");
 
-// LISTAR produtos (usa o novo formato JSON)
-async function listarProdutos() {
-  try {
-    const resp = await fetch('listarProdutos.php');
-    const json = await resp.json();
-    if (!json || json.status !== 'ok') {
-      console.error('listarProdutos: resposta inválida', json);
-      return;
-    }
-    const produtos = json.produtos || [];
-    const tbody = document.getElementById('lista-produtos');
-    tbody.innerHTML = '';
-    produtos.forEach(p => {
-      tbody.innerHTML += `
-        <tr>
-          <td><img src="${p.foto_principal}" width="50" style="border-radius:4px;"></td>
-          <td>${p.nome}</td>
-          <td>R$ ${parseFloat(p.preco).toFixed(2)}</td>
-        </tr>
-      `;
+    links.forEach((link, index) => {
+        link.addEventListener("click", event => {
+            event.preventDefault();
+
+            // Esconde todas as seções
+            secDashboard.style.display = "none";
+            secPerfil.style.display = "none";
+            secAdicionar.style.display = "none";
+
+            // Remove a classe 'active' de todos os links e adiciona ao clicado
+            links.forEach(l => l.classList.remove("active"));
+            link.classList.add("active");
+
+            // Exibe a seção correspondente
+            if (index === 0) secDashboard.style.display = "block";
+            if (index === 1) secPerfil.style.display = "block";
+            if (index === 2) secAdicionar.style.display = "block";
+        });
     });
-    document.getElementById('totalProdutos').textContent = produtos.length;
-  } catch (err) {
-    console.error('Erro ao listar produtos:', err);
-  }
-}
 
-// CADASTRO via AJAX (espera JSON)
-const form = document.getElementById('formProduto');
-const fotoPreview = document.getElementById('fotoPreview');
+    /* ============================
+              LISTAR PRODUTOS
+    ============================= */
+    async function listarProdutos() {
+        try {
+            const resp = await fetch("listarProdutos.php");
+            const json = await resp.json();
 
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  const formData = new FormData(form);
-  try {
-    const resp = await fetch('processaProduto.php', { method: 'POST', body: formData });
-    const json = await resp.json();
-    if (!json) throw new Error('Resposta inválida do servidor');
-    if (json.status === 'ok') {
-      alert(json.message || 'Produto cadastrado');
-      form.reset();
-      fotoPreview.innerHTML = '<span>+</span>';
-      listarProdutos();
-    } else {
-      alert('Erro: ' + (json.message || 'Falha ao cadastrar'));
+            // ⚠️ Verificação obrigatória do status do PHP
+            if (json.status !== "ok") {
+                console.error("Erro ao listar produtos:", json.mensagem || "Resposta inválida do servidor.");
+                return;
+            }
+
+            const lista = document.getElementById("lista-produtos");
+            lista.innerHTML = "";
+
+            json.produtos.forEach(produto => {
+                // Renderiza a imagem, nome e preço na tabela
+                lista.innerHTML += `
+                    <tr>
+                        <td><img src="${produto.foto_principal}" width="60" style="border-radius:6px; object-fit: cover;"></td>
+                        <td>${produto.nome}</td>
+                        <td>R$ ${parseFloat(produto.preco).toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            // Atualiza a contagem de produtos em estoque
+            document.getElementById("totalProdutos").textContent = json.produtos.length; 
+
+        } catch (erro) {
+            console.error("Erro ao carregar produtos:", erro);
+        }
     }
-  } catch (err) {
-    console.error('Erro ao cadastrar produto:', err);
-    alert('Erro ao cadastrar produto. Veja console.');
-  }
-});
 
+    /* ============================
+              CADASTRAR PRODUTO
+    ============================= */
+    const form = document.getElementById("formProduto");
+    const fotoPreview = document.getElementById("fotoPreview");
 
-// ======= Filtro de pesquisa =======
-document.getElementById('search').addEventListener('input', e => {
-  const termo = e.target.value.toLowerCase();
-  document.querySelectorAll('#lista-produtos tr').forEach(tr => {
-    const nome = tr.children[1].textContent.toLowerCase();
-    tr.style.display = nome.includes(termo) ? 'table-row' : 'none';
-  });
-});
+    if (form) {
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
 
+            const formData = new FormData(form);
 
-// ======= Preview da imagem =======
-document.getElementById('foto').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if(file){
-    const reader = new FileReader();
-    reader.onload = ev => fotoPreview.innerHTML = `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
-    reader.readAsDataURL(file);
-  } else {
-    fotoPreview.innerHTML = '<span>+</span>';
-  }
-});
+            try {
+                const resp = await fetch("processaProduto.php", {
+                    method: "POST",
+                    body: formData
+                });
 
-// ======= Gráfico de vendas =======
-new Chart(document.getElementById("graficoVendas"), {
-  type: 'bar',
-  data: {
-    labels: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-    datasets: [
-      { label: 'Vendas', data: [300,400,350,500,480,600,580,540,570,610,620,630], backgroundColor: 'limegreen' },
-      { label: 'Itens', data: [200,250,240,300,280,350,340,320,330,360,370,380], backgroundColor: 'red' }
-    ]
-  },
-  options: { responsive:true, scales:{ y:{ beginAtZero:true } } }
-});
+                const json = await resp.json();
 
-// ======= Inicializa lista de produtos ao carregar página =======
-window.addEventListener('load', listarProdutos);
-document.addEventListener('DOMContentLoaded', () => {
-    const perfilContainer = document.getElementById('perfil-container');
-    const loginLink = document.getElementById('loginLink');
-    const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+                if (json.status === "ok") {
+                    alert("Produto cadastrado com sucesso!");
+                    form.reset();
+                    if (fotoPreview) fotoPreview.innerHTML = "<span>+</span>";
+                    listarProdutos(); // Recarrega a lista
+                } else {
+                    alert("Erro ao cadastrar: " + (json.message || "Verifique o arquivo processaProduto.php")); 
+                }
+
+            } catch (erro) {
+                console.error("Erro ao cadastrar produto:", erro);
+                alert("Erro de conexão ao cadastrar produto.");
+            }
+        });
+    }
+
+    /* ============================
+                PREVIEW FOTO
+    ============================= */
+    const inputFoto = document.getElementById("foto");
+
+    if (inputFoto && fotoPreview) {
+        inputFoto.addEventListener("change", e => {
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    fotoPreview.innerHTML =
+                        `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fotoPreview.innerHTML = "<span>+</span>";
+            }
+        });
+    }
+
+    /* ============================
+              FILTRO DE PESQUISA
+    ============================= */
+    const search = document.getElementById("search");
+
+    if (search) {
+        search.addEventListener("input", event => {
+            const termo = event.target.value.toLowerCase();
+
+            document.querySelectorAll("#lista-produtos tr").forEach(tr => {
+                const nome = tr.children[1].textContent.toLowerCase();
+                tr.style.display = nome.includes(termo) ? "" : "none";
+            });
+        });
+    }
+
+    /* ============================
+              GRÁFICO VENDAS
+    ============================= */
+    const graficoVendas = document.getElementById("graficoVendas");
+
+    if (graficoVendas) {
+        new Chart(graficoVendas, {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                datasets: [
+                    { label: "Vendas", data: [300, 400, 350, 500, 480, 600, 580, 540, 570, 610, 620, 630], backgroundColor: "limegreen" },
+                    { label: "Itens", data: [200, 250, 240, 300, 280, 350, 340, 320, 330, 360, 370, 380], backgroundColor: "red" }
+                ]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+    }
+
+    /* ============================
+              PERFIL DINÂMICO
+    ============================= */
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
 
     if (usuario) {
-      // Mostra nome/ícone de perfil
-      perfilContainer.innerHTML = `
-        <div class="perfil-info">
-          <img src="../Login/imgLogin/perfil.png" alt="Perfil" class="perfil-icon">
-          <span>${usuario.nome}</span>
-          <button id="logoutBtn">Sair</button>
-        </div>
-      `;
+        const setText = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        };
 
-      // botão de sair
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('usuarioLogado');
-        window.location.reload();
-      });
+        // Dados do Header e Perfil
+        setText("headerEmpresaNome", usuario.nome_empresa);
+        setText("perfilNomeEmpresa", usuario.nome_empresa);
+        setText("perfilCNPJ", "CNPJ: " + (usuario.cnpj || "---"));
+        setText("perfilEmail", usuario.email || "---");
+        setText("perfilTelefone", usuario.telefone || "---");
+        
+        // Trata IDs duplicados (se existirem)
+        document.querySelectorAll('#perfilEndereco').forEach(el => el.textContent = usuario.endereco || 'Endereço...');
+        document.querySelectorAll('#perfilCategoria').forEach(el => el.textContent = usuario.categoria || 'Categoria...');
     }
-  });
+
+    /* ============================
+                  SAIR
+    ============================= */
+    // ⚠️ Caminho para o login. Se estiver dando 'Not Found', tente um caminho relativo como: "../Login/indexLogin.html"
+    const URL_LOGIN = "http://localhost/branch-teste-main/Login/indexLogin.html"; 
+
+    function sair() {
+        console.log("Logout iniciado. Redirecionando para:", URL_LOGIN);
+        localStorage.removeItem("usuarioLogado");
+        window.location.href = URL_LOGIN;
+    }
+
+    const btnSair = document.getElementById("btnSair"); // Botão do Perfil
+    const btnSidebarSair = document.getElementById("btnSidebarSair"); // Botão do Sidebar
+
+    // Adiciona listener se o elemento existir (garantia contra erro no console)
+    if (btnSair) btnSair.addEventListener("click", sair);
+    if (btnSidebarSair) btnSidebarSair.addEventListener("click", sair);
+
+    /* ============================
+                DASHBOARD
+    ============================= */
+    async function carregarDashboard() {
+        try {
+            const resp = await fetch("dadosDashboard.php");
+            const json = await resp.json();
+
+            if (json.status === "ok") {
+                // Atualiza cards que não são do total de produtos
+                document.getElementById("cardTotalProdutos").textContent = json.produtos;
+                document.getElementById("cardTotalAnuncios").textContent = json.anuncios;
+            }
+
+        } catch (erro) {
+            console.error("Erro ao carregar dadosDashboard.php:", erro);
+        }
+    }
+
+    /* ============================
+              INICIAR PÁGINA
+    ============================= */
+    // Inicia o carregamento dos dados
+    listarProdutos();
+    carregarDashboard();
+
+});
