@@ -15,29 +15,26 @@
 <body>
   <!-- Header -->
   <header class="header">
-  <div class="header__inner">
-    <!-- Marca -->
-    <a href="LandingPage/index.html" class="brand" aria-label="Página inicial">
-      <img src="imgLandingPage/LogoPecaAq4.png" alt="Logo" class="brand__logo" />
-      <span class="brand__name">PEÇAAQ</span>
-    </a>
-    <!-- Navegação -->
-  <!-- Navegação -->
-            <nav class="nav" aria-label="Principal">
-                <a href="../LaningPage/indexLandingPage.html">Home</a>
-                <a href="../Produtos/index.html">Comprar peças</a>
-            </nav>
+    <div class="header__inner">
+      <!-- Marca -->
+      <a href="LandingPage/index.html" class="brand" aria-label="Página inicial">
+        <img src="imgLandingPage/LogoPecaAq4.png" alt="Logo" class="brand__logo" />
+        <span class="brand__name">PEÇAAQ</span>
+      </a>
+      <!-- Navegação -->
+      <nav class="nav" aria-label="Principal">
+        <a href="../LaningPage/indexLandingPage.html">Home</a>
+        <a href="../Produtos/index.html">Comprar peças</a>
+      </nav>
 
-           
-              <div id="user-area">Faça seu cadastro</div>
+      <div id="user-area">Faça seu cadastro</div>
 
-
-    <!-- Toggle (Mobile) -->
-    <button class="nav__toggle" aria-label="Abrir menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
+      <!-- Toggle (Mobile) -->
+      <button class="nav__toggle" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
 
   <!-- Carrossel Principal -->
   <section class="hero" id="inicio" aria-label="Destaques">
@@ -49,13 +46,8 @@
           <p>Distribuidores, oficinas e autopeças unidos em uma plataforma prática, que facilita negociações e acelera
             seus resultados. <a href="http://127.0.0.1:5500/Produtos/index.html">Saiba mais</a></p>
         </div>
-
-
-
       </article>
-
     </div>
-
   </section>
 
   <!-- ==========================================
@@ -142,13 +134,8 @@
     </div>
   </section>
 
-
-
-
-
   <!-- Footer -->
   <footer class="site-footer">
-
     <div class="container footer-content">
       <div class="footer-section">
         <h4>Links Úteis</h4>
@@ -168,6 +155,7 @@
           <li><a href="#">(51) 98031-4793</a></li>
           <p><strong>WhatsApp:</strong></p>
           <li><a href="#">(51) 98031-4793</a></li>
+        </ul>
       </div>
       <div class="footer-section">
         <h4>Informações</h4>
@@ -181,7 +169,7 @@
       <div class="footer-section">
         <h4>Privacidade</h4>
         <ul>
-          <li><a href="#">Política de Priacidade</a></li>
+          <li><a href="#">Política de Privacidade</a></li>
           <li><a href="#">Política de Entrega</a></li>
           <li><a href="#">Garantia, Trocas e Devoluções</a></li>
           <li><a href="#">Termos de uso</a></li>
@@ -206,10 +194,43 @@
         <a href="mailto:contato@pecaaq.com.br" class="social-btn gmail"><img src="imgLandingPage/Facebook.svg" alt=""></a>
       </div>
     </div>
-
   </footer>
-<script src="../headerProfile.js"></script> 
-<script src="app.js"></script>
-</body>
 
+  <!-- Scripts -->
+  <script src="app.js"></script>
+
+  <!-- Script para trocar o botão dinamicamente -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const userArea = document.getElementById("user-area");
+
+      const usuarioData = localStorage.getItem("usuarioLogado");
+      if (!usuarioData) return;
+
+      try {
+        const usuario = JSON.parse(usuarioData);
+        if (usuario && usuario.tipo) {
+          // Troca o texto e estilo conforme tipo
+          userArea.textContent = "Perfil";
+          userArea.style.padding = "0.5rem 1rem";
+          userArea.style.borderRadius = "6px";
+          userArea.style.cursor = "pointer";
+          userArea.style.color = "#fff";
+          userArea.style.fontWeight = "600";
+          userArea.style.transition = "0.3s";
+
+          if (usuario.tipo.toLowerCase() === "fornecedor" || usuario.tipo.toLowerCase() === "empresa") {
+            userArea.style.backgroundColor = "#f39c12"; // Laranja empresa
+            userArea.onclick = () => window.location.href = "../DashBoard/index.html";
+          } else {
+            userArea.style.backgroundColor = "#27ae60"; // Verde cliente
+            userArea.onclick = () => window.location.href = "../PerfilCliente/perfil_cliente.php";
+          }
+        }
+      } catch (err) {
+        console.warn("Erro ao processar dados do usuário:", err);
+      }
+    });
+  </script>
+</body>
 </html>
