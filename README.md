@@ -1,7 +1,5 @@
 # 🚗 Peçaaq – Plataforma de Compra e Venda de Peças Automotivas
 
-![Banner Peçaaq](https://via.placeholder.com/800x200.png?text=Pe%C3%A7aaq+%7C+TechLabs)
-
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
 ![HTML5](https://img.shields.io/badge/HTML5-orange?style=for-the-badge&logo=html5)
 ![CSS3](https://img.shields.io/badge/CSS3-blue?style=for-the-badge&logo=css3)
@@ -25,47 +23,57 @@ O Peçaaq tem como objetivo **facilitar o comércio de peças automotivas**, per
 - [x] Cadastro de produtos (peças automotivas)  
 - [x] Edição e exclusão de produtos cadastrados  
 - [x] Busca e filtragem de produtos  
-- [x] Integração com WhatsApp para contato rápido com vendedores  
-- [x] Layout responsivo e moderno  
-- [x] Validações de campos e mensagens de erro  
-
+- [x] Cadastro de empresa
+- [x] DashBoard de usuário e empresa
 ---
 
 ## 🖥️ Telas do Sistema
-
-### 🔐 Tela de Login
-- Login seguro com usuário e senha
-- Redireciona para a página inicial após autenticação
+--lucas coloca aqui o wireframe
 
 ### 🧍 Tela de Cadastro de Usuário
 - Campos: Nome, E-mail, Senha
 - Validação de dados e prevenção de duplicidade
-
-### 🛒 Tela de Cadastro de Produto
-- Cadastro de peças com: Nome, SKU, Marca, Descrição e Imagem
-- Permite edição e exclusão de produtos
-- Visualização em tabela/lista
-
-### 🏠 Tela Inicial (Landing Page)
-- Mostra os produtos disponíveis
-- Permite buscar, filtrar e acessar o WhatsApp do vendedor
-- Layout responsivo e intuitivo
-
-> 💡 *Imagens das telas podem ser adicionadas futuramente*
 
 ---
 
 ## 🗃️ Estrutura do Projeto
 
 Pecaaq/
-├── src/
+├── Cadastrar/
 │ ├── js/ # Scripts JavaScript para funcionalidades
 │ ├── css/ # Arquivos de estilo CSS
 │ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
 │ └── html/ # Páginas HTML do sistema
-├── database/
-│ └── pecaaq.sql # Script do banco de dados MySQL
-├── images/ # Imagens do sistema e produtos
+├── Comprar/
+│ ├── js/ # Scripts JavaScript para funcionalidades
+│ ├── css/ # Arquivos de estilo CSS
+│ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
+│ └── html/ # Páginas HTML do sistemaL
+├── DashBoard/
+│ ├── js/ # Scripts JavaScript para funcionalidades
+│ ├── css/ # Arquivos de estilo CSS
+│ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
+│ └── html/ # Páginas HTML do sistema
+├── LandingPage/
+│ ├── js/ # Scripts JavaScript para funcionalidades
+│ ├── css/ # Arquivos de estilo CSS
+│ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
+│ └── html/ # Páginas HTML do sistema
+├── Login/
+│ ├── js/ # Scripts JavaScript para funcionalidades
+│ ├── css/ # Arquivos de estilo CSS
+│ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
+│ └── html/ # Páginas HTML do sistema
+├── PerfilCliente/
+│ ├── js/ # Scripts JavaScript para funcionalidades
+│ ├── css/ # Arquivos de estilo CSS
+│ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
+│ └── html/ # Páginas HTML do sistema
+├── Sobre/
+│ ├── js/ # Scripts JavaScript para funcionalidades
+│ ├── css/ # Arquivos de estilo CSS
+│ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
+│ └── html/ # Páginas HTML do sistema
 └── README.md # Documentação do projeto
 
 yaml
