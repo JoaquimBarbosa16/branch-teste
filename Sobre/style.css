@@ -16,10 +16,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: linear-gradient(180deg, #1b1b1b, #151515);
+  background: #0D1B2A;
   padding: 18px 50px;
-  gap: 100px;
+  gap: 10px;
   border-bottom: 1px solid #2a2a2a;
+ height: 90px;
 }
 
 .navbar .logo {
@@ -39,13 +40,7 @@ body {
   gap: 50px;
 }
 
-.navbar a {
-  color: #ccc;
-  text-decoration: none;
-  font-family: 'Fjalla One', sans-serif;
-  position: relative;
-  transition: color 0.3s ease;
-}
+
 
 .navbar a::after {
   content: "";
@@ -230,4 +225,13 @@ body {
   background: #0a0a0a;
   color: #dcdcdc;
   font-size: 0.95rem;
+}
+.nav a {
+    padding: .5rem .75rem;
+    border-radius: 6px;
+    color: #c8d2ee;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: larger;
 }
