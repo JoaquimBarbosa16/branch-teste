@@ -258,9 +258,63 @@ O projeto foi desenvolvido seguindo **metodologia ágil (Scrum)**, com sprints e
 ## Casos de Uso
 [Casos de Uso - PEÇAAQ.pdf](https://github.com/user-attachments/files/23538595/Casos.de.Uso.-.PECAAQ.pdf)
 
+```
+%% Diagrama de Casos de Uso Peçaaq
+%% Use este bloco com suporte Mermaid no GitHub
+
+%% Atores
+actor Cliente
+actor Empresa
+actor Visitante
+actor Sistema
+
+%% Casos de uso
+usecase CU01 as "Login"
+usecase CU02 as "Cadastro de Usuário"
+usecase CU03 as "Listar Produtos + Filtros"
+usecase CU04 as "Visualizar Produto e Comprar"
+usecase CU05 as "Finalizar Compra"
+usecase CU06 as "Avaliar Produto"
+usecase CU07 as "Gerenciar Produtos"
+usecase CU08 as "Logout"
+usecase CU09 as "Página Institucional Sobre/Equipe"
+usecase CU10 as "Exibição de Perfil no Header"
+
+%% Relacionamentos
+Cliente --> CU01
+Cliente --> CU02
+Cliente --> CU03
+Cliente --> CU04
+Cliente --> CU05
+Cliente --> CU06
+Cliente --> CU08
+Cliente --> CU10
+
+Empresa --> CU01
+Empresa --> CU02
+Empresa --> CU07
+Empresa --> CU08
+Empresa --> CU10
+
+Visitante --> CU09
+
+Sistema --> CU01
+Sistema --> CU02
+Sistema --> CU03
+Sistema --> CU04
+Sistema --> CU05
+Sistema --> CU06
+Sistema --> CU07
+Sistema --> CU08
+Sistema --> CU09
+Sistema --> CU10
+```
 ---
 
 ## WorkFlow
+
+[WorkFlow-PEÇAAQ.pdf](https://github.com/user-attachments/files/23538669/WorkFlow-PECAAQ.pdf)
+
 ```
 ┌───────────────┐
 │ Landing Page  │
