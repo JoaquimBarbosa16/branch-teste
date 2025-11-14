@@ -352,8 +352,6 @@ Sistema --> CU10
         │
         ▼
       Banco de Dados
- (usuarios, produtos, pedidos)
-        
         │
         └───────────── Empresa ──────────────┐
                                              │
