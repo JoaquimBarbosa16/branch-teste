@@ -115,6 +115,8 @@ Projeto desenvolvido no **Curso Técnico em Informática** do **Colégio São Lu
 1. **Clone o repositório:**
    ```bash
    git clone https://github.com/techlabs/Pecaaq.git
+
+````
 Configure o banco de dados MySQL:
 
 Crie um banco chamado pecaaq
@@ -130,7 +132,7 @@ $user = "root";
 $password = "";
 $db   = "pecaaq";
 Abra o projeto no navegador através de um servidor local (XAMPP, WAMP ou similar).
-
+`````
 ## 👨‍💻 Autores
 
 - Scrum Master: Gabriel Bandasz
