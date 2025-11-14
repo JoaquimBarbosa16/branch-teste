@@ -30,7 +30,7 @@ O Peçaaq tem como objetivo **facilitar o comércio de peças automotivas**, per
 ---
 
 ## 🖥️ Telas do Sistema
---lucas coloca aqui o wireframe
+--lucas coloca aqui o wireframe e o mockup aqui
 ---
 
 ## 🗃️ Estrutura do Projeto
