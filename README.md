@@ -3,7 +3,7 @@
 
 
 **Peçaaq** é uma plataforma inovadora para **compra e venda de peças automotivas**, desenvolvida para tornar o processo mais rápido, seguro e intuitivo.  
-Criada pela equipe **TechLabs**, o projeto foi desenvolvido no **curso Técnico em Informática** do **Colégio São Lucas**.
+
 ---
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
