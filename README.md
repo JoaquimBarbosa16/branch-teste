@@ -83,7 +83,6 @@ Pecaaq/
 | **Back-end** | PHP 7+ |
 | **Banco de Dados** | MySQL |
 | **Controle de Versão** | Git / GitHub |
-| **Design** | Responsivo, layout moderno |
 
 ---
 
