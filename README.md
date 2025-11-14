@@ -1,14 +1,16 @@
 # 🚗 Peçaaq – Plataforma de Compra e Venda de Peças Automotivas
 
+
+
+**Peçaaq** é uma plataforma inovadora para **compra e venda de peças automotivas**, desenvolvida para tornar o processo mais rápido, seguro e intuitivo.  
+Criada pela equipe **TechLabs**, o projeto foi desenvolvido no **curso Técnico em Informática** do **Colégio São Lucas**.
+---
+
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
 ![HTML5](https://img.shields.io/badge/HTML5-orange?style=for-the-badge&logo=html5)
 ![CSS3](https://img.shields.io/badge/CSS3-blue?style=for-the-badge&logo=css3)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge)
 ![GitHub](https://img.shields.io/badge/GitHub-Controle%20de%20Vers%C3%A3o-black?style=for-the-badge)
-
-**Peçaaq** é uma plataforma inovadora para **compra e venda de peças automotivas**, desenvolvida para tornar o processo mais rápido, seguro e intuitivo.  
-Criada pela equipe **TechLabs**, o projeto foi desenvolvido no **curso Técnico em Informática** do **Colégio São Lucas**.
-
 ---
 
 ## 🚀 Objetivo do Projeto
@@ -29,15 +31,10 @@ O Peçaaq tem como objetivo **facilitar o comércio de peças automotivas**, per
 
 ## 🖥️ Telas do Sistema
 --lucas coloca aqui o wireframe
-
-### 🧍 Tela de Cadastro de Usuário
-- Campos: Nome, E-mail, Senha
-- Validação de dados e prevenção de duplicidade
-
 ---
 
 ## 🗃️ Estrutura do Projeto
-
+```
 Pecaaq/
 ├── Cadastrar/
 │ ├── js/ # Scripts JavaScript para funcionalidades
@@ -75,10 +72,7 @@ Pecaaq/
 │ ├── php/ # Arquivos PHP para conexão e CRUD com MySQL
 │ └── html/ # Páginas HTML do sistema
 └── README.md # Documentação do projeto
-
-yaml
-Copiar código
-
+```
 ---
 
 ## ⚙️ Tecnologias Utilizadas
