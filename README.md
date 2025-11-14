@@ -413,3 +413,5 @@ Abra o projeto no navegador através de um servidor local (XAMPP, WAMP ou simila
 - Desenvolvedores (DEVs):
 - Pedro Flores
 - Lucas Matheus
+- Joaquim Barbosa
+- Leonardo Schimmit
