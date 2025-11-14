@@ -28,7 +28,9 @@
     </nav>
 
     <div class="sidebar-footer">
-
+<button id="btnVoltar" class="btn-voltar">
+  <i class="fa-solid fa-arrow-left"></i> Voltar
+</button>
 <button id="btnSidebarSair"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
     </div>
   </div>
@@ -54,10 +56,7 @@
           <p class="valor" id="cardTotalProdutos">0</p>
         </div>
 
-        <div class="card">
-          <h3>Total de Anúncios</h3>
-          <p class="valor" id="cardTotalAnuncios">0</p>
-        </div>
+      
 
 
         <div class="card">
@@ -69,92 +68,112 @@
       <div class="content">
 
         <!-- Tabela -->
-        <div class="tabela-produtos">
-          <h3>Produtos</h3>
-          <input type="text" id="search" placeholder="🔍 Pesquise...">
+<div class="tabela-produtos">
+  <h3>Produtos</h3>
+  <input type="text" id="search" placeholder="🔍 Pesquise...">
 
-          <table>
-            <thead>
-              <tr>
-                <th>Imagem</th>
-                <th>Nome</th>
-                <th>Preço</th>
-              </tr>
-            </thead>
-            <tbody id="lista-produtos">
-              <!-- Renderiza via JS -->
-            </tbody>
-          </table>
-        </div>
+  <table id="tabelaProdutos">
+    <thead>
+      <tr>
+        <th>Imagem</th>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
 
-        <!-- Gráfico -->
-        <div class="grafico">
-          <h3>Dados de Vendas</h3>
-          <canvas id="graficoVendas"></canvas>
-        </div>
+    <tbody id="lista-produtos">
+      <!-- preenchido pelo JS -->
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE EDIÇÃO IGUAL AO DO PERFIL -->
+<div id="modalEditar" class="modal" style="display:none;">
+  <div class="modal-content">
+      <span class="close" id="fecharModal">&times;</span>
+      <h2>Editar Produto</h2>
+
+      <input type="hidden" id="edit_id">
+
+      <label>Nome:</label>
+      <input type="text" id="edit_nome">
+
+      <label>SKU:</label>
+      <input type="text" id="edit_sku">
+
+      <label>Marca:</label>
+      <input type="text" id="edit_marca">
+
+      <label>Preço:</label>
+      <input type="text" id="edit_preco">
+
+      <label>Descrição Técnica:</label>
+      <textarea id="edit_descricao"></textarea>
+
+
+  </div>
+</div>
+
+
+</div>
+
+
+     
 
       </div>
     </section>
+<!-- SEÇÃO: PERFIL -->
+<section id="sec-perfil" style="display:none;" class="perfil">
+  <div class="perfil-card">
 
-    <!-- SEÇÃO: PERFIL -->
-    <section id="sec-perfil" style="display:none;" class="perfil">
+    <!-- TOPO: Nome da empresa e CNPJ -->
+    <div class="perfil-top">
+      <h2 id="perfilNomeEmpresa">Carregando...</h2>
+      <p id="perfilCNPJ">CNPJ: ---</p>
+    </div>
 
-      <div class="perfil-card">
+    <div class="perfil-info-clean">
+      <h3>Informações da Conta</h3>
 
-        <div class="perfil-header perfil-linha">
-
-          <div class="perfil-left">
-            <img src="img/empresa.png" class="perfil-foto">
-          </div>
-
-          <div class="perfil-right">
-            <h2 id="perfilNomeEmpresa">Carregando...</h2>
-            <p id="perfilCNPJ">CNPJ: ---</p>
-
-            <div class="perfil-tags">
-              <span id="perfilCategoria">Categoria...</span>
-              <span id="perfilEndereco">Endereço...</span>
-            </div>
-          </div>
-
-        </div>
-
-
-        <div class="perfil-info-clean">
-
-          <h3>Informações da Empresa</h3>
-
-          <div class="linha-info">
-            <span class="label">Email</span>
-            <p id="perfilEmail" class="valor-info">---</p>
-          </div>
-
-          <div class="linha-info">
-            <span class="label">Telefone</span>
-            <p id="perfilTelefone" class="valor-info">---</p>
-          </div>
-
-          <div class="linha-info">
-            <span class="label">Endereço</span>
-            <p id="perfilEndereco" class="valor-info">---</p>
-          </div>
-
-          <div class="linha-info">
-            <span class="label">Categoria</span>
-            <p id="perfilCategoria" class="valor-info">---</p>
-          </div>
-
-        </div>
-
-
-        <div class="perfil-actions">
-          <button class="btn-editar">Editar Perfil</button>
-          <button class="btn-sair" id="btnSair">Sair da Empresa</button>
-        </div>
-
+      <div class="linha-info">
+        <span class="label">Email:</span>
+        <p id="perfilEmail" class="valor-info">---</p>
       </div>
 
-    </section>
+      <div class="linha-info">
+        <span class="label">Telefone:</span>
+        <p id="perfilTelefone" class="valor-info">---</p>
+      </div>
+    </div>
+
+   <div class="perfil-actions">
+      <button id="btnEditarPerfil">Editar Perfil</button>
+      <button class="btn-sair" id="btnSair">Sair da Empresa</button>
+   </div>
+<!-- Modal de Edição de Perfil -->
+<div id="modalEditarPerfil" style="display:none;" class="modal">
+  <div class="modal-content">
+    <h3>Editar Perfil</h3>
+    <form id="formEditarPerfil">
+      <label for="editarEmail">Email:</label>
+      <input type="email" name="email" id="editarEmail" required>
+
+      <label for="editarTelefone">Telefone:</label>
+      <input type="text" name="telefone" id="editarTelefone" required>
+
+      <div class="modal-buttons">
+        <button type="submit" class="btn-salvar">Salvar</button>
+        <button type="button" id="btnFecharEditarPerfil" class="btn-cancelar">Cancelar</button>
+      </div>
+    </form>
+    <div id="msgEditarPerfil"></div>
+  </div>
+</div>
+
+</section>
+
+
 
     <!-- SEÇÃO: ADICIONAR PRODUTO -->
     <section id="sec-adicionar" style="display:none;">
@@ -193,11 +212,11 @@
   </main>
 
   <!-- ✅ SCRIPT COMPLETO DO DASHBOARD -->
-   <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ============================
-          TROCAR ENTRE AS SEÇÕES (Navegação Sidebar)
+          TROCAR ENTRE SEÇÕES
     ============================= */
     const links = document.querySelectorAll(".sidebar nav a");
     const secDashboard = document.getElementById("sec-dashboard");
@@ -222,18 +241,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ============================
-              LISTAR PRODUTOS (Preenche a tabela)
+              LISTAR PRODUTOS
     ============================= */
     async function listarProdutos() {
         try {
-            // Este fetch chama listarProdutos.php, que você corrigiu para o caminho da imagem
-            const resp = await fetch("listarProdutos.php"); 
+            const resp = await fetch("listarProdutos.php");
             const json = await resp.json();
 
-            if (json.status !== "ok") {
-                console.error("Erro ao listar produtos:", json.mensagem || "Resposta inválida do servidor.");
-                return;
-            }
+            if (json.status !== "ok") return;
 
             const lista = document.getElementById("lista-produtos");
             lista.innerHTML = "";
@@ -244,11 +259,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td><img src="${produto.foto_principal}" width="60" style="border-radius:6px; object-fit: cover;"></td>
                         <td>${produto.nome}</td>
                         <td>R$ ${parseFloat(produto.preco).toFixed(2)}</td>
+
+                        <td>
+                            <button class="btn-excluir-prod" onclick="excluirProduto(${produto.id_produto})">🗑️ Excluir</button>
+                        </td>
                     </tr>
                 `;
             });
 
-            document.getElementById("totalProdutos").textContent = json.produtos.length; 
+            document.getElementById("totalProdutos").textContent = json.produtos.length;
 
         } catch (erro) {
             console.error("Erro ao carregar produtos:", erro);
@@ -264,12 +283,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (form) {
         form.addEventListener("submit", async event => {
             event.preventDefault();
-
             const formData = new FormData(form);
 
             try {
-                // 🔑 CORREÇÃO CRÍTICA: Chama o processaProduto.php que agora está na pasta Produtos/
-                const resp = await fetch("../Produtos/processaProduto.php", { 
+                const resp = await fetch("../DashBoard/processaProduto.php", {
                     method: "POST",
                     body: formData
                 });
@@ -277,17 +294,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const json = await resp.json();
 
                 if (json.status === "ok") {
-                    alert("Produto cadastrado com sucesso!");
+                    alert("Produto cadastrado!");
                     form.reset();
-                    if (fotoPreview) fotoPreview.innerHTML = "<span>+</span>";
-                    listarProdutos(); 
+                    fotoPreview.innerHTML = "<span>+</span>";
+                    listarProdutos();
                 } else {
-                    alert("Erro ao cadastrar: " + (json.mensagem_erro || "Verifique o arquivo processaProduto.php")); 
+                    alert("Erro ao cadastrar produto");
                 }
 
             } catch (erro) {
-                console.error("Erro ao cadastrar produto:", erro);
-                alert("Erro de conexão ao cadastrar produto.");
+                console.error("Erro:", erro);
             }
         });
     }
@@ -300,22 +316,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (inputFoto && fotoPreview) {
         inputFoto.addEventListener("change", e => {
             const file = e.target.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    fotoPreview.innerHTML =
-                        `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
-                };
-                reader.readAsDataURL(file);
-            } else {
+            if (!file) {
                 fotoPreview.innerHTML = "<span>+</span>";
+                return;
             }
+
+            const reader = new FileReader();
+            reader.onload = ev => {
+                fotoPreview.innerHTML =
+                    `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
+            };
+            reader.readAsDataURL(file);
         });
     }
 
     /* ============================
-              FILTRO DE PESQUISA
+              PESQUISA
     ============================= */
     const search = document.getElementById("search");
 
@@ -331,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ============================
-              GRÁFICO VENDAS
+              GRÁFICO
     ============================= */
     const graficoVendas = document.getElementById("graficoVendas");
 
@@ -339,10 +355,10 @@ document.addEventListener("DOMContentLoaded", () => {
         new Chart(graficoVendas, {
             type: "bar",
             data: {
-                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                labels: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
                 datasets: [
-                    { label: "Vendas", data: [300, 400, 350, 500, 480, 600, 580, 540, 570, 610, 620, 630], backgroundColor: "limegreen" },
-                    { label: "Itens", data: [200, 250, 240, 300, 280, 350, 340, 320, 330, 360, 370, 380], backgroundColor: "red" }
+                    { label: "Vendas", data: [300,400,350,500,480,600,580,540,570,610,620,630], backgroundColor: "limegreen" },
+                    { label: "Itens", data: [200,250,240,300,280,350,340,320,330,360,370,380], backgroundColor: "red" }
                 ]
             },
             options: { responsive: true, scales: { y: { beginAtZero: true } } }
@@ -350,45 +366,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ============================
-              PERFIL DINÂMICO
+              PERFIL
     ============================= */
     const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
 
     if (usuario) {
-        const setText = (id, text) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = text;
-        };
-
+        const setText = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t };
         setText("headerEmpresaNome", usuario.nome_empresa);
         setText("perfilNomeEmpresa", usuario.nome_empresa);
         setText("perfilCNPJ", "CNPJ: " + (usuario.cnpj || "---"));
         setText("perfilEmail", usuario.email || "---");
         setText("perfilTelefone", usuario.telefone || "---");
-        
-        document.querySelectorAll('#perfilEndereco').forEach(el => el.textContent = usuario.endereco || 'Endereço...');
-        document.querySelectorAll('#perfilCategoria').forEach(el => el.textContent = usuario.categoria || 'Categoria...');
     }
 
     /* ============================
-                  SAIR (Logout)
+                LOGOUT
     ============================= */
-    const URL_LOGIN = "http://localhost/branch-teste-main/Login/indexLogin.html"; 
+    const URL_LOGIN = "http://localhost/CSL-Scrum-main/Login/indexLogin.html";
 
     function sair() {
-        console.log("Logout iniciado. Redirecionando para:", URL_LOGIN);
         localStorage.removeItem("usuarioLogado");
         window.location.href = URL_LOGIN;
     }
 
-    const btnSair = document.getElementById("btnSair");
-    const btnSidebarSair = document.getElementById("btnSidebarSair");
-
-    if (btnSair) btnSair.addEventListener("click", sair);
-    if (btnSidebarSair) btnSidebarSair.addEventListener("click", sair);
+    document.getElementById("btnSair")?.addEventListener("click", sair);
+    document.getElementById("btnSidebarSair")?.addEventListener("click", sair);
 
     /* ============================
-                DASHBOARD (Carrega Cards)
+                DASHBOARD
     ============================= */
     async function carregarDashboard() {
         try {
@@ -399,21 +404,153 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("cardTotalProdutos").textContent = json.produtos;
                 document.getElementById("cardTotalAnuncios").textContent = json.anuncios;
             }
-
         } catch (erro) {
-            console.error("Erro ao carregar dadosDashboard.php:", erro);
+            console.error("Erro:", erro);
         }
     }
 
-    /* ============================
-              INICIAR PÁGINA
-    ============================= */
     listarProdutos();
     carregarDashboard();
-
 });
-  </script>
+
+/* ============================
+      BOTÃO EDITAR (Modal)
+============================ */
+async function abrirModalEditar(id) {
+    const resp = await fetch("buscarProduto.php?id=" + id);
+    const data = await resp.json();
+
+    if (!data.ok) return alert("Erro ao buscar produto!");
+
+    const p = data.produto;
+
+    document.getElementById("edit_id").value = p.id_produto;
+    document.getElementById("edit_nome").value = p.nome;
+    document.getElementById("edit_sku").value = p.sku;
+    document.getElementById("edit_marca").value = p.marca;
+    document.getElementById("edit_preco").value = p.preco;
+    document.getElementById("edit_descricao").value = p.descricao;
+
+    document.getElementById("modalEditar").style.display = "block";
+}
+
+/* ============================
+      FECHAR MODAL
+============================ */
+document.getElementById("fecharModal")?.addEventListener("click", () => {
+    document.getElementById("modalEditar").style.display = "none";
+});
+
+/* ============================
+      SALVAR EDIÇÃO
+============================ */
+document.getElementById("salvarEdicao")?.addEventListener("click", async () => {
+    const fd = new FormData();
+
+    fd.append("id", document.getElementById("edit_id").value);
+    fd.append("nome", document.getElementById("edit_nome").value);
+    fd.append("sku", document.getElementById("edit_sku").value);
+    fd.append("marca", document.getElementById("edit_marca").value);
+    fd.append("preco", document.getElementById("edit_preco").value);
+    fd.append("descricao", document.getElementById("edit_descricao").value);
+
+    const resp = await fetch("editarProduto.php", {
+        method: "POST",
+        body: fd
+    });
+
+    const data = await resp.json();
+
+    if (data.ok) {
+        alert("Produto atualizado!");
+        document.getElementById("modalEditar").style.display = "none";
+        location.reload();
+    } else {
+        alert("Erro ao salvar!");
+    }
+});
+
+/* ============================
+      EXCLUIR PRODUTO
+============================ */
+async function excluirProduto(id) {
+    if (!confirm("Deseja excluir este produto?")) return;
+
+    const fd = new FormData();
+    fd.append("id_produto", id);
+
+    const resp = await fetch("excluirProduto.php", {
+        method: "POST",
+        body: fd
+    });
+
+    const data = await resp.json();
+
+    if (data.ok) {
+        alert("Produto excluído!");
+        location.reload();
+    } else {
+        alert("Erro ao excluir!");
+    }
+}
+
+
+
+const btnVoltar = document.getElementById("btnVoltar");
+if (btnVoltar) {
+  btnVoltar.addEventListener("click", () => {
+    // Mantém o usuário logado
+    window.location.href = "../LaningPage/indexLandingPage.html";
+  });
+}
+</script>
+
 <script src="script.js"></script>
 </body>
 
+ <style>
+    /* Estilo do botão de excluir */
+    .btn-excluir-prod {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-excluir-prod:hover {
+        background-color: #c0392b;
+        transform: scale(1.05);
+    }
+
+    .btn-excluir-prod:active {
+        transform: scale(0.98);
+    }
+    /* Botão Voltar estilizado */
+.btn-voltar {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+.btn-voltar:active {
+  transform: scale(0.98);
+}
+  </style>
 </html>

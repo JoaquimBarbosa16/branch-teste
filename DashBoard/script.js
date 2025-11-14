@@ -1,228 +1,133 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* ============================
-          TROCAR ENTRE AS SEÇÕES
-    ============================= */
-    const links = document.querySelectorAll(".sidebar nav a");
-    const secDashboard = document.getElementById("sec-dashboard");
-    const secPerfil = document.getElementById("sec-perfil");
-    const secAdicionar = document.getElementById("sec-adicionar");
+  // ==================== CARREGAR PERFIL ====================
+  async function carregarPerfil() {
+    try {
+      const resp = await fetch("perfil_empresa.php", { cache: "no-store" });
+      const data = await resp.json();
 
-    links.forEach((link, index) => {
-        link.addEventListener("click", event => {
-            event.preventDefault();
+      if (!data.erro) {
+        const nome = data.nome_razao_social || "---";
+        const cnpj = data.documento || "---";
+        const email = data.email || "---";
+        const telefone = data.telefone || "---";
 
-            // Esconde todas as seções
-            secDashboard.style.display = "none";
-            secPerfil.style.display = "none";
-            secAdicionar.style.display = "none";
+        document.getElementById("perfilNomeEmpresa").textContent = nome;
+        document.getElementById("perfilCNPJ").textContent = "CNPJ: " + cnpj;
+        document.getElementById("perfilEmail").textContent = email;
+        document.getElementById("perfilTelefone").textContent = telefone;
+        document.getElementById("headerEmpresaNome").textContent = nome;
 
-            // Remove a classe 'active' de todos os links e adiciona ao clicado
-            links.forEach(l => l.classList.remove("active"));
-            link.classList.add("active");
-
-            // Exibe a seção correspondente
-            if (index === 0) secDashboard.style.display = "block";
-            if (index === 1) secPerfil.style.display = "block";
-            if (index === 2) secAdicionar.style.display = "block";
-        });
-    });
-
-    /* ============================
-              LISTAR PRODUTOS
-    ============================= */
-    async function listarProdutos() {
-        try {
-            const resp = await fetch("listarProdutos.php");
-            const json = await resp.json();
-
-            // ⚠️ Verificação obrigatória do status do PHP
-            if (json.status !== "ok") {
-                console.error("Erro ao listar produtos:", json.mensagem || "Resposta inválida do servidor.");
-                return;
-            }
-
-            const lista = document.getElementById("lista-produtos");
-            lista.innerHTML = "";
-
-            json.produtos.forEach(produto => {
-                // Renderiza a imagem, nome e preço na tabela
-                lista.innerHTML += `
-                    <tr>
-                        <td><img src="${produto.foto_principal}" width="60" style="border-radius:6px; object-fit: cover;"></td>
-                        <td>${produto.nome}</td>
-                        <td>R$ ${parseFloat(produto.preco).toFixed(2)}</td>
-                    </tr>
-                `;
-            });
-
-            // Atualiza a contagem de produtos em estoque
-            document.getElementById("totalProdutos").textContent = json.produtos.length; 
-
-        } catch (erro) {
-            console.error("Erro ao carregar produtos:", erro);
-        }
-    }
-
-    /* ============================
-              CADASTRAR PRODUTO
-    ============================= */
-    const form = document.getElementById("formProduto");
-    const fotoPreview = document.getElementById("fotoPreview");
-
-    if (form) {
-        form.addEventListener("submit", async event => {
-            event.preventDefault();
-
-            const formData = new FormData(form);
-
-            try {
-                const resp = await fetch("processaProduto.php", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const json = await resp.json();
-
-                if (json.status === "ok") {
-                    alert("Produto cadastrado com sucesso!");
-                    form.reset();
-                    if (fotoPreview) fotoPreview.innerHTML = "<span>+</span>";
-                    listarProdutos(); // Recarrega a lista
-                } else {
-                    alert("Erro ao cadastrar: " + (json.message || "Verifique o arquivo processaProduto.php")); 
-                }
-
-            } catch (erro) {
-                console.error("Erro ao cadastrar produto:", erro);
-                alert("Erro de conexão ao cadastrar produto.");
-            }
-        });
-    }
-
-    /* ============================
-                PREVIEW FOTO
-    ============================= */
-    const inputFoto = document.getElementById("foto");
-
-    if (inputFoto && fotoPreview) {
-        inputFoto.addEventListener("change", e => {
-            const file = e.target.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    fotoPreview.innerHTML =
-                        `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                fotoPreview.innerHTML = "<span>+</span>";
-            }
-        });
-    }
-
-    /* ============================
-              FILTRO DE PESQUISA
-    ============================= */
-    const search = document.getElementById("search");
-
-    if (search) {
-        search.addEventListener("input", event => {
-            const termo = event.target.value.toLowerCase();
-
-            document.querySelectorAll("#lista-produtos tr").forEach(tr => {
-                const nome = tr.children[1].textContent.toLowerCase();
-                tr.style.display = nome.includes(termo) ? "" : "none";
-            });
-        });
-    }
-
-    /* ============================
-              GRÁFICO VENDAS
-    ============================= */
-    const graficoVendas = document.getElementById("graficoVendas");
-
-    if (graficoVendas) {
-        new Chart(graficoVendas, {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-                datasets: [
-                    { label: "Vendas", data: [300, 400, 350, 500, 480, 600, 580, 540, 570, 610, 620, 630], backgroundColor: "limegreen" },
-                    { label: "Itens", data: [200, 250, 240, 300, 280, 350, 340, 320, 330, 360, 370, 380], backgroundColor: "red" }
-                ]
-            },
-            options: { responsive: true, scales: { y: { beginAtZero: true } } }
-        });
-    }
-
-    /* ============================
-              PERFIL DINÂMICO
-    ============================= */
-    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-
-    if (usuario) {
-        const setText = (id, text) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = text;
+        // Salva no localStorage para edição posterior
+        const usuario = {
+          id_usuario: data.id_usuario,
+          nome_razao_social: nome,
+          email: email,
+          telefone: telefone
         };
-
-        // Dados do Header e Perfil
-        setText("headerEmpresaNome", usuario.nome_empresa);
-        setText("perfilNomeEmpresa", usuario.nome_empresa);
-        setText("perfilCNPJ", "CNPJ: " + (usuario.cnpj || "---"));
-        setText("perfilEmail", usuario.email || "---");
-        setText("perfilTelefone", usuario.telefone || "---");
-        
-        // Trata IDs duplicados (se existirem)
-        document.querySelectorAll('#perfilEndereco').forEach(el => el.textContent = usuario.endereco || 'Endereço...');
-        document.querySelectorAll('#perfilCategoria').forEach(el => el.textContent = usuario.categoria || 'Categoria...');
+        localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+      } else {
+        console.warn("Erro ao carregar perfil:", data.msg);
+      }
+    } catch (err) {
+      console.error("Falha ao carregar perfil:", err);
     }
+  }
 
-    /* ============================
-                  SAIR
-    ============================= */
-    // ⚠️ Caminho para o login. Se estiver dando 'Not Found', tente um caminho relativo como: "../Login/indexLogin.html"
-    const URL_LOGIN = "http://localhost/branch-teste-main/Login/indexLogin.html"; 
+  carregarPerfil();
 
-    function sair() {
-        console.log("Logout iniciado. Redirecionando para:", URL_LOGIN);
-        localStorage.removeItem("usuarioLogado");
-        window.location.href = URL_LOGIN;
-    }
+  // ==================== EDITAR PERFIL ====================
+  const btnEditarPerfil = document.getElementById("btnEditarPerfil");
+  const modalEditarPerfil = document.getElementById("modalEditarPerfil");
+  const btnFecharEditarPerfil = document.getElementById("btnFecharEditarPerfil");
+  const formEditarPerfil = document.getElementById("formEditarPerfil");
+  const msgEditarPerfil = document.getElementById("msgEditarPerfil");
+  const inputEmail = document.getElementById("editarEmail");
+  const inputTelefone = document.getElementById("editarTelefone");
 
-    const btnSair = document.getElementById("btnSair"); // Botão do Perfil
-    const btnSidebarSair = document.getElementById("btnSidebarSair"); // Botão do Sidebar
+  if (btnEditarPerfil) {
+    btnEditarPerfil.addEventListener("click", async () => {
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+      if (!usuario) return alert("Nenhum usuário logado!");
 
-    // Adiciona listener se o elemento existir (garantia contra erro no console)
-    if (btnSair) btnSair.addEventListener("click", sair);
-    if (btnSidebarSair) btnSidebarSair.addEventListener("click", sair);
+      inputEmail.value = usuario.email || "";
+      inputTelefone.value = usuario.telefone || "";
+      msgEditarPerfil.textContent = "";
 
-    /* ============================
-                DASHBOARD
-    ============================= */
-    async function carregarDashboard() {
-        try {
-            const resp = await fetch("dadosDashboard.php");
-            const json = await resp.json();
+      modalEditarPerfil.style.display = "block";
+    });
+  }
 
-            if (json.status === "ok") {
-                // Atualiza cards que não são do total de produtos
-                document.getElementById("cardTotalProdutos").textContent = json.produtos;
-                document.getElementById("cardTotalAnuncios").textContent = json.anuncios;
-            }
+  if (btnFecharEditarPerfil) {
+    btnFecharEditarPerfil.addEventListener("click", () => {
+      modalEditarPerfil.style.display = "none";
+      formEditarPerfil.reset();
+    });
+  }
 
-        } catch (erro) {
-            console.error("Erro ao carregar dadosDashboard.php:", erro);
+  if (formEditarPerfil) {
+    formEditarPerfil.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+      if (!usuario) return alert("Nenhum usuário logado!");
+
+      const email = inputEmail.value.trim();
+      const telefone = inputTelefone.value.trim();
+      const id_usuario = usuario.id_usuario;
+
+      if (!email || !telefone) {
+        return alert("Preencha email e telefone corretamente.");
+      }
+
+      const formData = new FormData();
+      formData.append("id_usuario", id_usuario);
+      formData.append("email", email);
+      formData.append("telefone", telefone);
+
+      try {
+        const resp = await fetch("atualizarPerfil.php", {
+          method: "POST",
+          body: formData
+        });
+        const data = await resp.json();
+
+        if (data.ok) {
+          alert("Perfil atualizado com sucesso!");
+          document.getElementById("perfilEmail").textContent = email;
+          document.getElementById("perfilTelefone").textContent = telefone;
+
+          usuario.email = email;
+          usuario.telefone = telefone;
+          localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+
+          modalEditarPerfil.style.display = "none";
+        } else {
+          alert(data.msg || "Erro ao atualizar perfil.");
         }
-    }
+      } catch (err) {
+        console.error(err);
+        alert("Erro de conexão. Tente novamente.");
+      }
+    });
+  }
 
-    /* ============================
-              INICIAR PÁGINA
-    ============================= */
-    // Inicia o carregamento dos dados
-    listarProdutos();
-    carregarDashboard();
+  // ==================== LOGOUT ====================
+  const btnSair = document.getElementById("btnSair");
+  const btnSidebarSair = document.getElementById("btnSidebarSair");
+  const btnSairEmpresa = document.getElementById("btnSairEmpresa");
+
+  // ✅ Caminho fixo para o login (sem erro de porta)
+  const URL_LOGIN = "../login/indexLogin.html";
+
+  function sair() {
+    localStorage.removeItem("usuarioLogado");
+    sessionStorage.clear();
+    window.location.href = URL_LOGIN;
+  }
+
+  if (btnSair) btnSair.addEventListener("click", sair);
+  if (btnSidebarSair) btnSidebarSair.addEventListener("click", sair);
+  if (btnSairEmpresa) btnSairEmpresa.addEventListener("click", sair);
 
 });
