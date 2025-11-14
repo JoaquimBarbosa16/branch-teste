@@ -10,7 +10,7 @@
 ![HTML5](https://img.shields.io/badge/HTML5-orange?style=for-the-badge&logo=html5)
 ![CSS3](https://img.shields.io/badge/CSS3-blue?style=for-the-badge&logo=css3)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge)
-![GitHub](https://img.shields.io/badge/GitHub-Controle%20de%20Vers%C3%A3o-black?style=for-the-badge)
+
 ---
 
 ## 🚀 Objetivo do Projeto
