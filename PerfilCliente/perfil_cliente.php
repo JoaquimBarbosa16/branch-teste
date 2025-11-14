@@ -64,11 +64,7 @@ $stmt->bind_result($nomeCliente, $emailCliente);
 $stmt->fetch();
 $stmt->close();
 
-$itensCarrinho = [
-  ["produto" => "Mouse Gamer RGB", "quantidade" => 1, "preco" => 149.90],
-  ["produto" => "Teclado Mecânico", "quantidade" => 1, "preco" => 299.00],
-  ["produto" => "Parafuso M6 x 20 (pacote 50)", "quantidade" => 2, "preco" => 24.50],
-];
+
 
 $landingPage = "../LaningPage/indexLandingPage.html";
 $logoutEndpoint = "../Login/logout.php";
@@ -297,13 +293,7 @@ $logoutEndpoint = "../Login/logout.php";
         <div class="muted">Logado como Cliente</div>
       </div>
 
-      <div class="card-row">
-        <div class="card">
-          <h3>Resumo do Carrinho</h3>
-          <?php $total = array_sum(array_map(fn($it) => $it['quantidade'] * $it['preco'], $itensCarrinho)); ?>
-          <p><strong>Itens:</strong> <?php echo count($itensCarrinho); ?></p>
-          <p><strong>Valor total:</strong> R$ <?php echo number_format($total, 2, ',', '.'); ?></p>
-        </div>
+     
 
         <div class="card">
           <h3>Informações</h3>
@@ -312,19 +302,7 @@ $logoutEndpoint = "../Login/logout.php";
         </div>
       </div>
 
-      <section class="card">
-        <h3>Itens no Carrinho</h3>
-        <div class="cart-grid">
-          <?php foreach ($itensCarrinho as $it): ?>
-            <div class="cart-item">
-              <h4><?php echo htmlspecialchars($it['produto']); ?></h4>
-              <p>Quantidade: <?php echo $it['quantidade']; ?></p>
-              <p>Preço unitário: R$ <?php echo number_format($it['preco'], 2, ',', '.'); ?></p>
-              <p><strong>Total:</strong> R$ <?php echo number_format($it['quantidade'] * $it['preco'], 2, ',', '.'); ?></p>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </section>
+      
     </div>
 
     <div id="paginaConfig" style="display:none;">
