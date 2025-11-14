@@ -90,9 +90,9 @@ Pecaaq/
 
 - Sistema de cadastro e login de usuários  
 - CRUD completo de produtos  
-- Listagem e pesquisa de peças  
-- Integração com WhatsApp para contato direto  
-- Layout moderno, responsivo e amigável  
+- Listagem e pesquisa de peças
+- DashBoard
+- Criar, excluir, listar
 - Validação de campos e tratamento de erros  
 
 ---
