@@ -102,11 +102,6 @@ Pecaaq/
 
 O projeto foi desenvolvido seguindo **metodologia ágil (Scrum)**, com sprints e reuniões de acompanhamento, garantindo entregas rápidas e organizadas.
 
-### 🧩 Papéis no Time:
-- **Scrum Master:** Gabriel Bandasz  
-- **Product Owner (PO):** Gabriel Sandes  
-- **Desenvolvedores:** Pedro Flores, Lucas Matheus, Joaquim Guedes e Leonardo Schimmit  
-
 ---
 
 ## 🏫 Contexto Acadêmico
@@ -136,11 +131,10 @@ $password = "";
 $db   = "pecaaq";
 Abra o projeto no navegador através de um servidor local (XAMPP, WAMP ou similar).
 
-👨‍💻 Desenvolvedores
-Nome	Função
-Gabriel Bandasz	Scrum Master
-Gabriel Sandes	Product Owner
-Pedro Flores	Desenvolvedor
-Lucas Matheus	Desenvolvedor
-Joaquim Guedes	Desenvolvedor
-Leonardo Schimmit	Desenvolvedor
+## 👨‍💻 Autores
+
+- Scrum Master: Gabriel Bandasz
+- Product Owner (PO): Gabriel Sandes
+- Desenvolvedores (DEVs):
+- Pedro Flores
+- Lucas Matheus
