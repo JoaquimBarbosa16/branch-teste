@@ -98,6 +98,157 @@ Pecaaq/
 
 ---
 
+## 🗄️ Banco de dados
+```sql
+CREATE DATABASE IF NOT EXISTS pecaaq;
+USE pecaaq;
+
+-- Tabela de usuários
+CREATE TABLE usuarios (
+  id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+  tipo ENUM('Cliente','Fornecedor','Admin') DEFAULT 'Cliente',
+  nome_razao_social VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  senha_hash VARCHAR(255) NOT NULL,
+  documento VARCHAR(30),
+  telefone VARCHAR(30),
+  data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de fornecedores
+CREATE TABLE fornecedores (
+  id_fornecedor INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario_representante INT,
+  nome_fantasia VARCHAR(150) NOT NULL,
+  razao_social VARCHAR(200),
+  cnpj VARCHAR(18),
+  email_comercial VARCHAR(150),
+  telefone_comercial VARCHAR(30),
+  logo_url VARCHAR(255),
+  status ENUM('em_aprovacao','ativo','inativo') DEFAULT 'em_aprovacao',
+  data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario_representante) REFERENCES usuarios(id_usuario) ON DELETE SET NULL
+);
+
+-- Tabela de categorias
+CREATE TABLE categorias (
+  id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  id_categoria_pai INT,
+  FOREIGN KEY (id_categoria_pai) REFERENCES categorias(id_categoria) ON DELETE SET NULL
+);
+
+-- Tabela de produtos
+CREATE TABLE produtos (
+  id_produto INT AUTO_INCREMENT PRIMARY KEY,
+  id_categoria INT,
+  id_usuario INT NOT NULL,
+  nome VARCHAR(250) NOT NULL,
+  sku_universal VARCHAR(120),
+  marca VARCHAR(100),
+  descricao_tecnica TEXT,
+  foto_principal VARCHAR(255),
+  preco VARCHAR(250) NOT NULL,
+  categoria VARCHAR(100) NOT NULL,
+  data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+-- Tabela produto_fornecedor
+CREATE TABLE produto_fornecedor (
+  id_produto INT,
+  id_fornecedor INT,
+  codigo_fornecedor VARCHAR(100),
+  PRIMARY KEY (id_produto, id_fornecedor),
+  FOREIGN KEY (id_produto) REFERENCES produtos(id_produto) ON DELETE CASCADE,
+  FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id_fornecedor) ON DELETE CASCADE
+);
+
+-- Tabela de veículos
+CREATE TABLE veiculos (
+  id_veiculo INT AUTO_INCREMENT PRIMARY KEY,
+  montadora VARCHAR(100) NOT NULL,
+  modelo VARCHAR(100) NOT NULL,
+  versao VARCHAR(100),
+  ano_inicio INT,
+  ano_fim INT,
+  motorizacao VARCHAR(100)
+);
+
+-- Tabela produto_veiculo
+CREATE TABLE produto_veiculo (
+  id_produto INT,
+  id_veiculo INT,
+  observacao VARCHAR(255),
+  PRIMARY KEY (id_produto, id_veiculo),
+  FOREIGN KEY (id_produto) REFERENCES produtos(id_produto) ON DELETE CASCADE,
+  FOREIGN KEY (id_veiculo) REFERENCES veiculos(id_veiculo) ON DELETE CASCADE
+);
+
+-- Tabela de anúncios
+CREATE TABLE anuncio (
+  id_anuncio INT AUTO_INCREMENT PRIMARY KEY,
+  id_fornecedor INT NOT NULL,
+  id_produto INT NOT NULL,
+  titulo VARCHAR(255) NOT NULL,
+  preco DECIMAL(10,2) NOT NULL,
+  quantidade_estoque INT DEFAULT 0,
+  condicao ENUM('Novo','Usado','Remanufaturado') DEFAULT 'Novo',
+  status ENUM('Ativo','Pausado','Esgotado') DEFAULT 'Ativo',
+  data_publicacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  descricao TEXT,
+  referencia VARCHAR(100),
+  imagem_url VARCHAR(255),
+  FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id_fornecedor) ON DELETE CASCADE,
+  FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
+);
+
+-- Tabela de carrinhos
+CREATE TABLE carrinho (
+  id_carrinho INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+);
+
+-- Tabela de itens do carrinho
+CREATE TABLE carrinho_itens (
+  id_item INT AUTO_INCREMENT PRIMARY KEY,
+  id_carrinho INT NOT NULL,
+  id_anuncio INT NOT NULL,
+  quantidade INT NOT NULL,
+  preco_unitario DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_carrinho) REFERENCES carrinho(id_carrinho) ON DELETE CASCADE,
+  FOREIGN KEY (id_anuncio) REFERENCES anuncio(id_anuncio)
+);
+
+-- Tabela de pedidos
+CREATE TABLE pedidos (
+  id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario_comprador INT NOT NULL,
+  data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(50) DEFAULT 'AguardandoPagamento',
+  valor_total DECIMAL(10,2) DEFAULT 0.00,
+  valor_frete DECIMAL(10,2) DEFAULT 0.00,
+  endereco_entrega_id INT,
+  observacoes TEXT,
+  FOREIGN KEY (id_usuario_comprador) REFERENCES usuarios(id_usuario)
+);
+
+-- Tabela de itens do pedido
+CREATE TABLE itens_pedido_produto (
+  id_item INT AUTO_INCREMENT PRIMARY KEY,
+  id_pedido INT NOT NULL,
+  id_produto INT NOT NULL,
+  quantidade INT NOT NULL,
+  preco_unitario_venda DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido) ON DELETE CASCADE,
+  FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
+);
+```
+
 ## 🧠 Metodologia Utilizada
 
 O projeto foi desenvolvido seguindo **metodologia ágil (Scrum)**, com sprints e reuniões de acompanhamento, garantindo entregas rápidas e organizadas.
